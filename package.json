@@ -12,7 +12,7 @@
     ],
     "module": "hue-like-light-card.js",
     "repository": "git@github.com:cas112358/lovelace-hue-like-light-card.git",
-    "author": "Tom Zenkner <t.zenkner@email.cz>",
+    "author": "Carwyn Owen",
     "license": "LGPLv2.1",
     "dependencies": {
         "custom-card-helpers": "^1.9.0",
