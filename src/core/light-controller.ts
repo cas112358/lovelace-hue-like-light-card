@@ -1,4 +1,5 @@
 import { HomeAssistant } from 'custom-card-helpers';
+import { HueLikeLightCardConfig } from '../types/config';
 import { Consts } from '../types/consts';
 import { ILightContainer } from '../types/types';
 import { Background } from './colors/background';
@@ -12,6 +13,15 @@ export class LightController extends NotifyBase<LightController> implements ILig
     private _hass: HomeAssistant;
     private _lights: LightContainer[];
     private _defaultColor: Color;
+
+    public static LightController( entity_ids: string[], cardConfig: HueLikeLightCardConfig, homeAss: HomeAssistant ) : LightController {
+        
+        const lightController = new LightController( entity_ids, cardConfig.getDefaultColor() );
+
+        lightController.hass = homeAss;
+
+        return lightController;
+    }
 
     constructor(entity_ids: string[], defaultColor: Color) {
         super();

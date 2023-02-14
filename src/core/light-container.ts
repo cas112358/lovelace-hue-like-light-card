@@ -158,6 +158,6 @@ export class LightContainer implements ILightContainer {
 
     getEntityId(): string {
         return this._entity_id;
-    }
+    }   
 }
 

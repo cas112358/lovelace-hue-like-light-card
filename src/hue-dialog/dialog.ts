@@ -12,6 +12,7 @@ import { Consts } from '../types/consts';
 import { HueDialogTile } from './dialog-tile';
 import { HaDialog } from '../types/types';
 import { ThemeHelper } from '../types/theme-helper';
+import { GlobalLights } from '../core/global-lights';
 
 type Tab = 'colors' | 'scenes';
 
@@ -354,7 +355,7 @@ export class HueDialog extends LitElement {
         const onChangeCallback = () => {
             this.requestUpdate();
             this.updateStylesInner(false);
-        };
+        };      
 
         /*eslint-disable */
         return html`
@@ -404,16 +405,28 @@ export class HueDialog extends LitElement {
                             ${(this._config.scenes.map((s, i) => i % 2 == 0 ? html`` : html`<${unsafeStatic(HueDialogTile.ElementName)} .cardTitle=${cardTitle} .sceneConfig=${s} .hass=${this._ctrl.hass}></${unsafeStatic(HueDialogTile.ElementName)}>`))}
                         </div>
                     </div>
+                    <div class='header'>
+                        <div class='title'>${this._config.resources.lights}</div>
+                    </div>
+                    <div class='entity-scroller'>
+                        <div class='lightEntites'>
+                            ${(this._config.entities!.map( x => GlobalLights.getLightContainer(x) ).map( s =>
+                            html`
+                            <div class="tiles">
+                            <div> <ha-icon icon="${s.getIcon()}"></ha-icon> </div>
+                            <div> <h5>${s.getTitle()}</h5> </div>
+                            <div> ${ViewUtils.createSlider( LightController.LightController( [s.getEntityId()], this._config, this._ctrl.hass ), this._config, onChangeCallback)} </div>
+                            <div> ${ViewUtils.createSwitch( LightController.LightController( [s.getEntityId()], this._config, this._ctrl.hass ), onChangeCallback)} </div>
+                            </div>                            
+                            ` ))}
+                        </div>
+                    </div>
                   `
                 : html`
                     <h3>Here for Colors</h3>
                   `
         )}
-            <!--
-            <div class='header'>
-                <div class='title'>${this._config.resources.lights}</div>
-            </div>
-            -->
+
           </div>
         </ha-dialog>
         `;
