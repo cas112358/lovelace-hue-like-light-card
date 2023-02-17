@@ -193,7 +193,7 @@ export class HueDialog extends LitElement {
 
             border-bottom-left-radius: var(--ha-dialog-border-radius, 28px);
             border-bottom-right-radius: var(--ha-dialog-border-radius, 28px);
-            padding-bottom: calc(var(--ha-dialog-border-radius, 28px) / 2);
+            padding-bottom: calc(var(--ha-dialog-border-radius, 8px) / 2);
 
             overflow:hidden;
         }
@@ -204,6 +204,7 @@ export class HueDialog extends LitElement {
             display: block;
         }
         .heading ha-switch {
+            margin-top: 10px;
             margin-right: 10px;
         }
         .heading ha-slider {
@@ -229,12 +230,8 @@ export class HueDialog extends LitElement {
         }
         .header .title{
             color: ${unsafeCSS(Consts.ThemeSecondaryTextColorVar)};
-            font-family: var(--paper-font-title_-_font-family);
-            -webkit-font-smoothing: var( --paper-font-title_-_-webkit-font-smoothing );
-            font-size: var(--paper-font-subhead_-_font-size);
-            font-weight: var(--paper-font-title_-_font-weight);
-            letter-spacing: var(--paper-font-title_-_letter-spacing);
-            line-height: var(--paper-font-title_-_line-height);
+            font:Roboto;font-size:11px;
+            font-weight:600;
         }
 
         .content {
@@ -262,6 +259,41 @@ export class HueDialog extends LitElement {
             /* Flex loosing right padding, when overflowing */
             content: '';
             min-width: ${HueDialog.haPadding - HueDialog.tileGap}px;
+        }
+        .heading-title {
+            font-size:16px;
+            vertical-align:top;
+            font-weight:450;
+            text-overflow:ellipsis;
+            overflow:hidden;
+            font:Roboto;
+            white-space:nowrap;
+            color:var(--hue-text-color);
+            transition:all 0.3s ease-out 0s;
+            margin-top: 15px;
+        }
+        .light-title {
+            color:${unsafeCSS(Consts.LightColor)};
+            font-size: 12px;
+            line-height: 15px;
+            font-weight:350;
+            overflow:hidden;
+            font:Roboto;
+            transition: all 0.5s linear;
+            margin-top: 10px;
+            width:30%;
+        }
+        .light-slider {
+            width:50%;
+        }
+        .light-switch {
+            width:20%;
+            margin-left:10%;
+        }
+        .lights {
+            display: flex;
+            flex-flow: row;
+            margin-bottom: ${HueDialog.tileGap}px;
         }
         `];
     }
@@ -350,7 +382,7 @@ export class HueDialog extends LitElement {
         // inspiration: https://github.com/home-assistant/frontend/blob/dev/src/dialogs/more-info/ha-more-info-dialog.ts
 
         const cardTitle = this._config.getTitle(this._ctrl).resolveToString(this._ctrl.hass);
-        const mdiClose = 'mdi:close';
+        const mdiClose = 'mdi:arrow-left';
 
         const onChangeCallback = () => {
             this.requestUpdate();
@@ -373,13 +405,13 @@ export class HueDialog extends LitElement {
               >
                 <ha-icon
                   icon=${mdiClose}
-                  style="height:auto"
+                  style="height:20px"
                 >
                 </ha-icon>
               </ha-icon-button>
               <div
                 slot="title"
-                class="main-title"
+                class="main-title heading-title"
                 .title=${cardTitle}
               >
                 ${cardTitle}
@@ -412,11 +444,10 @@ export class HueDialog extends LitElement {
                         <div class='lightEntites'>
                             ${(this._config.entities!.map( x => GlobalLights.getLightContainer(x) ).map( s =>
                             html`
-                            <div class="tiles">
-                            <div> <ha-icon icon="${s.getIcon()}"></ha-icon> </div>
-                            <div> <h5>${s.getTitle()}</h5> </div>
-                            <div> ${ViewUtils.createSlider( LightController.LightController( [s.getEntityId()], this._config, this._ctrl.hass ), this._config, onChangeCallback)} </div>
-                            <div> ${ViewUtils.createSwitch( LightController.LightController( [s.getEntityId()], this._config, this._ctrl.hass ), onChangeCallback)} </div>
+                            <div class="lights">
+                            <div class="light-title">${s.getTitle()}</div>
+                            <div class="light-slider"> ${ViewUtils.createSlider( LightController.LightController( [s.getEntityId()], this._config, this._ctrl.hass ), this._config, onChangeCallback)} </div>
+                            <div class="light-switch"> ${ViewUtils.createSwitch( LightController.LightController( [s.getEntityId()], this._config, this._ctrl.hass ), onChangeCallback)} </div>
                             </div>                            
                             ` ))}
                         </div>

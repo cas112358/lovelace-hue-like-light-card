@@ -70,8 +70,8 @@ export class HueDialogTile extends LitElement {
     }
 
     private static readonly padding = 5; // px
-    private static readonly height = 100; // px
-    private static readonly width = 85; // px
+    private static readonly height = 80; // px
+    private static readonly width = 75; // px
     private static readonly colorDimensions = HueDialogTile.height / 2; // px
     private static readonly iconScale = (HueDialogTile.colorDimensions * 0.75) / 24; // 24 = default icon size
     private static readonly animationSeconds = 1.0;
@@ -128,14 +128,16 @@ export class HueDialogTile extends LitElement {
 
     .scene .title {
         color:${unsafeCSS(Consts.LightColor)};
-        font-size: 12px;
+        font-size: 11px;
         line-height: 15px;
-        font-weight:400;
         height:30%;
         text-align: center;
         display: flex;
         flex-flow: column;
         justify-content: center;
+        font-weight:400;
+        overflow:hidden;
+        font:Roboto;
         transition: all ${HueDialogTile.animationSeconds / 2}s linear;
     }
     .scene .title span {

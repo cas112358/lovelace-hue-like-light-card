@@ -7,8 +7,8 @@ export class Resources implements ResourcesInterface {
     constructor(config:ResourcesInterface | undefined) {
         config = config || {};
 
-        this.scenes = config.scenes || 'Scenes';
-        this.lights = config.lights || 'Lights';
+        this.scenes = config.scenes || 'MY SCENES';
+        this.lights = config.lights || 'LIGHTS';
     }
 
     readonly scenes: string;

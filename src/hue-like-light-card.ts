@@ -5,6 +5,7 @@ import { customElement } from 'lit/decorators.js';
 import { ClickHandler } from './core/click-handler';
 import { Background } from './core/colors/background';
 import { LightController } from './core/light-controller';
+import { LightStatusUtils } from './core/light-status-utils';
 import { ViewUtils } from './core/view-utils';
 import { HueLikeLightCardConfig } from './types/config';
 import { Consts } from './types/consts';
@@ -103,6 +104,7 @@ export class HueLikeLightCard extends LitElement implements LovelaceCard {
         background:var(--hue-background);
         position:relative;
         box-shadow:var(--hue-box-shadow), var(--ha-default-shadow);
+        margin:15px 0px 15px 0px;
     }
     ha-card.new-borders
     {
@@ -125,19 +127,34 @@ export class HueLikeLightCard extends LitElement implements LovelaceCard {
         position:absolute;
         left:22px;
         top:17px;
-        transform:scale(2);
+        transform:scale(1.2);
         color:var(--hue-text-color);
         transition:all 0.3s ease-out 0s;
     }
     h2
     {
-        padding-top:0.5em;
+        padding-top:12px;
         margin:0px 60px 0px 70px;
-        min-height:22px;
+        font-size:16px;
+        vertical-align:top;
+        font-weight:450;
+        text-overflow:ellipsis;
+        overflow:hidden;
+        font:Roboto;
+        white-space:nowrap;
+        color:var(--hue-text-color);
+        transition:all 0.3s ease-out 0s;
+    }
+    h3
+    {
+        padding-top:0px;
+        margin:0px 60px 0px 70px;
+        font-size:12px;
         vertical-align:top;
         font-weight:400;
         text-overflow:ellipsis;
         overflow:hidden;
+        font:Roboto;
         white-space:nowrap;
         color:var(--hue-text-color);
         transition:all 0.3s ease-out 0s;
@@ -249,8 +266,13 @@ export class HueLikeLightCard extends LitElement implements LovelaceCard {
 
         return html`<ha-card>
             <div class="tap-area" @click="${(): void => this.cardClicked()}">
+            <div>
                 <ha-icon icon="${this._config.icon || this._ctrl.getIcon()}"></ha-icon>
                 <h2 class="${classMap(h2Class)}">${title}</h2>
+            </div>
+            <div>
+                <h3 class="${classMap(h2Class)}">${LightStatusUtils.getLightStatus(this._ctrl)}</h3>
+            </div>
             </div>
             ${showSwitch ? ViewUtils.createSwitch(this._ctrl, onChangeCallback) : html``}
 
